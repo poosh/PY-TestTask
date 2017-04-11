@@ -1,0 +1,68 @@
+{% extends "base.html" %}
+
+{% block coltype %}flex{% endblock %}
+{% block content %}
+    <h1>Account: <strong>#{{ account.id }}</strong></h1>
+    <h1>Balance: <strong>{{ account.balance }} {{ account.currency }}</strong></h1>
+    {% if not object_list %}
+        <h2 class="empty-result">Account has not transactions</h2>
+        <ul class="object-tools"><li><a href="/transactions/" class="addlink">Add transaction</a></li></ul>
+    {% else %}
+    <h2>Transactions:</h2>
+    <div id="content-main">
+    <ul class="object-tools"><li><a href="/transactions/" class="addlink">Add transaction</a></li></ul>
+    <div class="results">
+        <table id="result_list">
+            <thead>
+                <tr>
+                    <th rowspan="2" scope="col" class="composite sortable">Trx. ID</th>
+                    <th colspan="3" class="composite">Source</th>
+                    <th colspan="3" class="composite">Destination</th>
+                    <th rowspan="2" scope="col" class="composite sortable">Transaction Time</th>
+                </tr>
+                <tr>
+                    <th scope="col" class="composite sortable">Account</th>
+                    <th scope="col" class="composite sortable">Amount</th>
+                    <th scope="col" class="composite sortable">Currency</th>
+                    <th scope="col" class="composite sortable">Account</th>
+                    <th scope="col" class="composite sortable">Amount</th>
+                    <th scope="col" class="composite sortable">Currency</th>
+                </tr>
+            </thead>
+            <tbody>
+            {% for tr in object_list %}
+                <tr class="row">
+                    <td class="field-id">{{ tr.id }}</td>
+                    {% if tr.src_account %}
+                        {% if tr.src_account == account %}
+                            <td class="field-account">#{{ tr.src_account.id }}</td>
+                            <td class="field-amount negative-balance">{{ tr.src_amount }}</td>
+                        {% else %}
+                            <td class="field-account"><a href="/accounts/{{ tr.src_account.id }}/">#{{ tr.src_account.id }}</a></td>
+                            <td class="field-amount">{{ tr.src_amount }}</td>
+                        {% endif %}
+                        <td class="field-currency">{{ tr.src_account.currency }}</td>
+                    {% else %}
+                        <td/><td/><td/>
+                    {%  endif %}
+                    {% if tr.dst_account %}
+                        {% if tr.dst_account == account %}
+                            <td class="field-account">#{{ tr.dst_account.id }}</td>
+                            <td class="field-amount positive-balance">{{ tr.dst_amount }}</td>
+                        {% else %}
+                            <td class="field-account"><a href="/accounts/{{ tr.dst_account.id }}/">#{{ tr.dst_account.id }}</a></td>
+                            <td class="field-amount">{{ tr.dst_amount }}</td>
+                        {% endif %}
+                        <td class="field-currency">{{ tr.dst_account.currency }}</td>
+                    {% else %}
+                        <td/><td/><td/>
+                    {%  endif %}
+                    <td class="field-time">{{ tr.create_timestamp }}</td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    </div>
+    {% endif %}
+{% endblock %}

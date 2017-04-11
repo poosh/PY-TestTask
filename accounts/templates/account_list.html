@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+
+{% block coltype %}flex{% endblock %}
+{% block content %}
+    <h1>Select an account to view</h1>
+    <div id="filter-row">
+        <a href="?">ALL</a>
+        {% for curr in currencies %}
+        <a href="?currency={{ curr.0 }}">{{ curr.0 }}</a>
+        {% endfor %}
+    </div>
+    <div id="content-main">
+    <ul class="object-tools"><li><a href="/accounts/add/" class="addlink">Add account</a></li></ul>
+    <div class="results">
+        <table id="result_list">
+            <thead>
+                <tr>
+                <th scope="col" class="field-account sortable">Account No.</th>
+                <th scope="col" class="field-amount sortable">Balance</th>
+                <th scope="col" class="field-currency sortable">Curency</th>
+                </tr>
+            </thead>
+            <tbody>
+            {% for account in object_list %}
+                <tr class="row">
+                    <td class="field-account"><a href="/accounts/{{ account.id }}/">#{{ account.id }}</a></td>
+                    <td class="field-amount">{{ account.balance }}</td>
+                    <td class="field-currency">{{ account.currency }}</td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    </div>
+{% endblock %}

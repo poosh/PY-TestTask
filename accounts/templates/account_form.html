@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <h1>Add account</h1>
+    <div id="content-main">
+    <form action="/accounts/add/" method="POST" id="post-form">
+        {% csrf_token %}
+        {{ form }}
+        <div class="submit-row">
+        <input type="submit" value="Save" class="default" name="_save">
+        </div>
+    </form>
+    </div>
+{% endblock %}
+
+{% block footer %}
+    <div id="result"></div>
+{% endblock %}
